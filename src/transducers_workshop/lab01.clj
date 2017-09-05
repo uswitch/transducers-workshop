@@ -46,9 +46,10 @@
 ; * If the search params contain a :company-id, then filter for that company ID
 ; * If the search params contain a :repayment-method type, then filter pruducts with that repayment type set to 'true'
 ; * If the search params contain a :loan-amount, only show products :min-loan-amount <= loan-amout <= :max-loan-amount
+; Can you guess why using eduction here? Why not sequence or transduce?
 
 (defn products [params feed]
-  (sequence (xform params) feed))
+  (eduction (xform params) feed))
 
 ;; How to use at the REPL to veryfy if everything is working:
 ; (require '[transducers-workshop.lab01 :as lab01] :reload)
@@ -61,18 +62,20 @@
 ; (count xs)
 ; 69
 
-; Task 3: store searches for company-id 46 and company-id 50 using an eduction.
-; Eductions attach the transducers chain to a specific collection (our feed)
-; and re-scans the collection at each invocation.
+; Task 3: store searches for company-id 46 and company-id 50.
+; sequence attaches the transducers chain to a specific collection (our feed)
+; and produces results on demand. The search can be stored (as far as the feed
+; doesn't change) and re-used in multiple places. The transducer chain won't execute
+; again and evaluated results cached.
 
 (defn create-search [params]
-  ;; ... create eduction here.
+  ;; ... create sequence here.
   )
 
 (def company1 (create-search {:company-id 46}))
 (def company2 (create-search {:company-id 50}))
 
-; What is eduction allowing in this scenario? Here's an example of what you should see:
+; What is sequence allowing in this scenario? Here's an example of what you should see:
 ; (map :name lab01/company1)
 ; ("Green Professional Credit Intermediary 1.5% Buyer AA123 3 0.75% Legals"
 ;  "AAA132 IO A130 BBB124 AAA125 Older Self / only) Year"
@@ -80,6 +83,6 @@
 ; (map :name lab01/company2)
 ; ("Loan Monthly AAA124 C/A Product A126 1% Tier 10 Starter")
 
-; What happens if company-id 50 launches a new product and I run
+; What happens if company-id 50 launches a new product in the feed and I run
 ; (map :name lab01/company2)
 ; again?

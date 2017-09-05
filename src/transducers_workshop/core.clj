@@ -27,3 +27,7 @@
                              :fee-attributes (fee-gen)
                              :created-at (System/currentTimeMillis))))
                 raw)))))
+
+(first (sequence (comp (mapcat range) (mapcat range)) [3000 6000 9000]))
+(first (mapcat range (mapcat range [3000 6000 9000])))
+(->> [[0 1 2] [3 4 5] [6 7 8]] (apply map vector))
