@@ -2,10 +2,10 @@
 
 ### Prerequisites
 
-[JDK/Java 1.8 installation](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-[Install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-[Install Leiningen](https://leiningen.org/#install)
-`git clone http://github.com/uswitch/transducers-workshop`
+* [JDK/Java 1.8 installation](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [Install Leiningen](https://leiningen.org/#install)
+* `git clone http://github.com/uswitch/transducers-workshop`
 
 ## Usage
 
