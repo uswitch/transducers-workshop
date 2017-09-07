@@ -2,7 +2,7 @@
   (:require
     [clojure.edn :as edn]
     [transducers-workshop.solutions.lab01 :refer [prepare-data]]
-    [clojure.core.async :refer [buffer go go-loop chan >! <! <!! close!]]))
+    [clojure.core.async :refer [go go-loop chan >! <! <!! close!]]))
 
 (defn load-data []
   (edn/read-string (slurp "feed.edn")))

@@ -1,8 +1,8 @@
-(ns transducers-workshop.solutions.lab03
+(ns transducers-workshop.lab03
   (:require
     [clojure.edn :as edn]
     [transducers-workshop.solutions.lab01 :refer [prepare-data]]
-    [clojure.core.async :refer [buffer go go-loop chan >! <! <!! close!]]))
+    [clojure.core.async :refer [go go-loop chan >! <! <!! close!]]))
 
 ; Welcome to lab3: attaching a transducer chain to a core.async process. In this lab we simulate a stream of incoming financial products. The products are nested maps of values, lists or other data. We developed a transducer to prepare this data for searching. Our idea is that the preparation step can be attached directly to the stream of incoming (raw) products so when we need to search them they are ready. We are going to save already prepared products in a local cache in memory. The follwing are functions and variables to use in the next step:
 
