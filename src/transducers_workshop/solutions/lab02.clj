@@ -16,8 +16,6 @@
 (transduce (comp (log true) (filter odd?) (map inc)) + (range 10))
 
 (defn moving-average
-  "Returns a lazy seq of the average values starting from
-  the beginning of coll up to the related element."
   ([]
    (fn [rf]
      (let [acc (volatile! [0 0])]
