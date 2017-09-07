@@ -16,7 +16,7 @@
   adding items one at a time into a channel.
   The go-loop builds the blocking queue
   waiting for a consumer downstream to pick the items up."
-  [items in]
+  [items in out]
   (go-loop []
     (when-some [item (<! in)]
       (>! out item)
@@ -31,6 +31,7 @@
       (println "adding to cache")
       (swap! cache conj item)
       (recur))))
+
 
 ; Step1: create an input and output channel. Invoke consume with the output channel. "consume" will be blocking waiting for input! Wrap the call in a "future" to start consuming from a separate thread.
 

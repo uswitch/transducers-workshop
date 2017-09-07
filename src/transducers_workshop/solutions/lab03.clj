@@ -14,7 +14,7 @@
   adding items one at a time into a channel.
   The go-loop builds the blocking queue
   waiting for a consumer downstream to pick the items up."
-  [items in]
+  [items in out]
   (go-loop []
     (when-some [item (<! in)]
       (>! out item)
@@ -35,7 +35,7 @@
 (def out (chan 1 prepare-data))
 (future (consume out))
 
-(to-stream (take 10 products) in)
+(to-stream (take 10 products) in out)
 
 (close! in)
 (close! out)
