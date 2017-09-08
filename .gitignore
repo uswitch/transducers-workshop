@@ -10,3 +10,4 @@ pom.xml.asc
 .hgignore
 .hg/
 raw.edn
+slides/00-welcome.pdf
