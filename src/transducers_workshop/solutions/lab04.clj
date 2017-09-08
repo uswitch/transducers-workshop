@@ -21,28 +21,52 @@
     feed))
 
 (defn call-parallel-reducers []
-  (lab04/parallel-reducers
+  (parallel-reducers
     {:repayment-method :payment-method-part-repayment
      :loan-amount 1500000}
-    (lab04/load-data 1000)))
+    (load-data 1000)))
 
 ; (time (def cs (lab04/call-parallel-reducers)))
 
+(def max-parallel
+  (inc (.availableProcessors (Runtime/getRuntime))))
+
 (defn parallel-async [params feed]
-  (let [out (async/chan (async/buffer 20))]
-    (pipeline
-      (inc (.availableProcessors (Runtime/getRuntime)))
+  (let [out (async/chan (async/buffer 100))]
+    (async/pipeline
+      max-parallel
       out
       (lab01/xform params)
       (async/to-chan feed))
-    (->> out
-         (async/reduce conj [])
-         async/<!!)))
+    (->> out (async/reduce conj []) async/<!!)))
 
 (defn call-parallel-async []
-  (lab04/parallel-async
+  (parallel-async
     {:repayment-method :payment-method-part-repayment
      :loan-amount 1500000}
-    (lab04/load-data 1000)))
+    (load-data 1000)))
 
 ; (time (def cs (lab04/call-parallel-async)))
+
+(defn parallel-async-multiple [params feed]
+  (let [io (async/chan (async/buffer 100))
+        out (async/chan (async/buffer 50))
+        prepare-pipeline (async/pipeline
+                           max-parallel
+                           io
+                           lab01/prepare-data
+                           (async/to-chan feed))
+        filter-pipeline (async/pipeline
+                          (quot max-parallel 2)
+                          out
+                          (lab01/filter-data params)
+                          io)]
+    (->> out (async/reduce conj []) async/<!!)))
+
+(defn call-parallel-async-multiple []
+  (parallel-async-multiple
+    {:repayment-method :payment-method-part-repayment
+     :loan-amount 1500000}
+    (load-data 1000)))
+
+; (time (def cs (lab04/call-parallel-async-multiple)))

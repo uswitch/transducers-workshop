@@ -28,32 +28,58 @@
     feed))
 
 (defn call-parallel-reducers []
-  (lab04/parallel-reducers
+  (parallel-reducers
     {:repayment-method :payment-method-part-repayment
      :loan-amount 1500000}
-    (lab04/load-data 1000)))
+    (load-data 1000)))
 
 ; (time (def cs (lab04/call-parallel-reducers)))
 
 ;; STEP 2: complete the following core.async pipeline to process the feed in parallel.
 
+(def max-parallel
+  (inc (.availableProcessors (Runtime/getRuntime))))
+
 (defn parallel-async [params feed]
-  (let [out (async/chan (async/buffer 20))]
-    (pipeline
-      ; put here the number of available processors on your machine.
+  (let [out (async/chan (async/buffer 100))]
+    (async/pipeline
+      max-parallel
       out
-      ; put here our transducing chain
+      (lab01/xform params)
       (async/to-chan feed))
-    (->> out
-         (async/reduce conj [])
-         async/<!!)))
+    (->> out (async/reduce conj []) async/<!!)))
 
 (defn call-parallel-async []
-  (lab04/parallel-async
+  (parallel-async
     {:repayment-method :payment-method-part-repayment
      :loan-amount 1500000}
-    (lab04/load-data 1000)))
+    (load-data 1000)))
 
 ; (time (def cs (lab04/call-parallel-async)))
 
-;; STEP 3: uncomment now the time benchmarks to test how fast they are. Which one is the fastest? Bonus: would you be able to rewrite the transducer chain as standard sequential processing. How long does it take to process the same list of products?
+;; STEP 3: core.async pipelines can be independently configured and attached together. We are going to give additional parallelism to the "prepare" step and attach it to the "filter" step in another pipeline.
+
+(defn parallel-async-multiple [params feed]
+  (let [io (async/chan (async/buffer 100))
+        out (async/chan (async/buffer 50))
+        prepare-pipeline (async/pipeline
+                           max-parallel
+                           io
+                           lab01/prepare-data
+                           (async/to-chan feed))
+        filter-pipeline (async/pipeline
+                          (quot max-parallel 2)
+                          out
+                          (lab01/filter-data params)
+                          io)]
+    (->> out (async/reduce conj []) async/<!!)))
+
+(defn call-parallel-async-multiple []
+  (parallel-async-multiple
+    {:repayment-method :payment-method-part-repayment
+     :loan-amount 1500000}
+    (load-data 1000)))
+
+; (time (def cs (lab04/call-parallel-async-multiple)))
+
+;; STEP 4: uncomment now the time benchmarks to test how fast they are. Which one is the fastest? Bonus: would you be able to rewrite the transducer chain as standard sequential processing. How long does it take to process the same list of products?
