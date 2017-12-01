@@ -20,7 +20,7 @@
 (def prepare-data
   (comp
     (xf/merge-into :product [:fee-attribute :created-at])
-    (xf/update-at :created-at #(Date. %))))
+    (xf/update-at :created-at #(date. %))))
 
 (defn filter-data [params]
   (comp
@@ -42,11 +42,11 @@
 
 ; (require '[transducers-workshop.solutions.lab01 :as lab01] :reload)
 
-; (def xs
-;   (lab01/products {; :company-id 46
-;                    :repayment-method :payment-method-part-repayment
-;                    :loan-amount 1500000}
-;                   (lab01/load-data)))
+(def xs
+  (products {; :company-id 46
+                   :repayment-method :part-repayment
+                   :loan-amount 1500000}
+                  data))
 ; (count xs)
 ; 69
 

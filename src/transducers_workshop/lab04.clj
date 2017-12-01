@@ -60,7 +60,7 @@
 ;; STEP 3: core.async pipelines can be independently configured and attached together. We are going to give additional parallelism to the "prepare" step and attach it to the "filter" step in another pipeline.
 
 (defn parallel-async-multiple [params feed]
-  (let [io (async/chan (async/buffer 100))
+  ([io (async/chan (async/buffer 100))
         out (async/chan (async/buffer 50))
         prepare-pipeline (async/pipeline
                            max-parallel
@@ -71,7 +71,7 @@
                           (quot max-parallel 2)
                           out
                           (lab01/filter-data params)
-                          io)]
+                          io)] let
     (->> out (async/reduce conj []) async/<!!)))
 
 (defn call-parallel-async-multiple []

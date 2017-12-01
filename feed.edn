@@ -190,7 +190,7 @@
    :payment-method-part-repayment true,
    :max-ltv 40.0,
    :name
-   "(DMS) Clear128 Fixed Intrinsic Part/Part Switcher AA130 BiR Tracker Reward",
+   "(DMS) Clear128 fixed intrinsic Part/Part Switcher AA130 BiR Tracker Reward",
    :apr 5.0,
    :max-age 85,
    :company-name "Marsden BS",
