@@ -22,11 +22,11 @@
 
 (defn call-parallel-reducers []
   (parallel-reducers
-    {:repayment-method :payment-method-part-repayment
+    {:repayment-method :payment-method-repayment
      :loan-amount 1500000}
     (load-data 1000)))
 
-; (time (def cs (lab04/call-parallel-reducers)))
+; (time (def cs (call-parallel-reducers)))
 
 (def max-parallel
   (inc (.availableProcessors (Runtime/getRuntime))))
@@ -42,11 +42,11 @@
 
 (defn call-parallel-async []
   (parallel-async
-    {:repayment-method :payment-method-part-repayment
+    {:repayment-method :payment-method-repayment
      :loan-amount 1500000}
     (load-data 1000)))
 
-; (time (def cs (lab04/call-parallel-async)))
+; (time (def cs (call-parallel-async)))
 
 (defn parallel-async-multiple [params feed]
   (let [io (async/chan (async/buffer 100))
@@ -65,8 +65,8 @@
 
 (defn call-parallel-async-multiple []
   (parallel-async-multiple
-    {:repayment-method :payment-method-part-repayment
+    {:repayment-method :payment-method-repayment
      :loan-amount 1500000}
     (load-data 1000)))
 
-; (time (def cs (lab04/call-parallel-async-multiple)))
+; (time (def cs (call-parallel-async-multiple)))
