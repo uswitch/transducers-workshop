@@ -16,10 +16,14 @@
 
 ; INPUT shape
 ; [{:fee-attributes []
-;   :product {:key1 "val1" :key2 "val2"}
+;   :product {:leagal-fee-added " "
+;             :apply-url nil
+;             ,,,}
 ;   :created-at 111111}
 ;  {:fee-attributes []
-;   :product {}
+;   :product {:leagal-fee-added " "
+;             :apply-url nil
+;             ,,,}
 ;   :created-at 111111}]
 
 ; If you want, also take a look at the actual feed in ./feed.edn.
@@ -30,19 +34,20 @@
 ; that we are getting rid of:
 
 ; OUTPUT shape:
-; [{:key1 "val1"
-;   :key2 "val2"
-;   :fee-attributes [1 2 3]
+; [{:fee-attributes [,,,]
+;   :legal-fee-added " "
+;   :apply-url nil
 ;   :created-at java.util.Date}
-;  {:key1 "val1"
-;   :key2 "val2"
-;   :fee-attributes [1 2 3]
+;  {:fee-attributes [,,,]
+;   :legal-fee-added " "
+;   :apply-url nil
 ;   :created-at java.util.Date}]
 
 ; Task 1: prepare the data.
 ; Write a combination of transducers to perform the following:
-; 1 Merge :fee-attributes and :create-at into the :product map.
-; 2 Transform :created-at date from long into java.util.Date
+; 1 Merge :create-at into the :fee-attributes map
+; 2 Merge all the key value pairs from :product map into :fee-attributes.
+; 3 Transform :created-at date from long into java.util.Date
 ; Place the transducers into the "xform" function. Test it using the
 ; "products" function.
 
