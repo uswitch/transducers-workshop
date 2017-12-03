@@ -20,7 +20,7 @@
 (def prepare-data
   (comp
     (xf/merge-into :product [:fee-attribute :created-at])
-    (xf/update-at :created-at #(date. %))))
+    (xf/update-at :created-at #(Date. %))))
 
 (defn filter-data [params]
   (comp
@@ -44,18 +44,20 @@
 
 (def xs
   (products {; :company-id 46
-                   :repayment-method :part-repayment
-                   :loan-amount 1500000}
-                  data))
-; (count xs)
-; 69
+             :repayment-method :payment-method-repayment
+             :loan-amount 1500000}
+            (load-data)))
+; (count (seq xs))
+; 117
 
 (defn create-search
   [params]
   (sequence (xform params) (load-data)))
 
 (def company1 (create-search {:company-id 46}))
+;; 3 products
 (def company2 (create-search {:company-id 50}))
+;; 1 product
 
 ; (let [data (lab01/load-data)] (quick-bench (sequence (lab01/xform {:company-id 46}) data)))
 ; (let [data (lab01/load-data)] (quick-bench (eduction (lab01/xform {:company-id 46}) data)))

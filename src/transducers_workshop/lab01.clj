@@ -60,8 +60,9 @@
 ; Task 2: now add filtering to perform the following:
 ; 1. Only show a product if it is :visible and :online (they should be true to be present in the list)
 ; 2. If the search params contain a :company-id, then filter for that company ID
-; 3. If the search params contain a :repayment-method key (there are a few values possible),
-;    then filter pruducts with that repayment type only.
+; 3. If the search params contain a :repayment-method key (with a value :payment-method-repayment
+;    for example) then only keep those products where that value (as a key) is true in the feed.
+;    A product could have ":payment-method-repayment false" and in that case we don't want to see it.
 ; 4. If the search params contain a :loan-amount, only show products where
 ;    :min-loan-amount <= loan-amout <= :max-loan-amount
 
@@ -77,12 +78,12 @@
   (eduction (xform params) feed))
 
 (def example-params
-  {:repayment-method :payment-method-part-repayment
+  {:repayment-method :payment-method-repayment
    :loan-amount 1500000})
 
 (def xs (products example-params (load-data)))
-(count xs)
-; You should see 69 products with those filters.
+(count (seq xs))
+; You should see 117 products with those filters.
 
 ; Task 3: store searches for company-id 46 and company-id 50.
 ; Next task is about creating defs for two very frequent searches
